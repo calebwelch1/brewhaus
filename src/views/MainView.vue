@@ -1,12 +1,15 @@
 <script lang="ts">
+import api from '../../api/punk-api.js'
 
 export default {
   data() {
     return { 
       windowWidth: window.innerWidth,
+      beers: [],
      }
   },
   mounted() {
+    this.getBeers();
   },
   beforeDestroy() { 
     window.removeEventListener('resize', this.onResize); 
@@ -15,13 +18,17 @@ export default {
     onResize() {
       this.windowWidth = window.innerWidth
     },
+    async getBeers() {
+      const data = await api.getBeers();
+      this.beers = data;
+    },
   },
   };
 </script>
 
 <template>
   <main>
-    working
+    {{this.beers}}
   </main>
 </template>
 

@@ -1,7 +1,9 @@
 // https://punkapi.com/documentation/v2
 const ENDPOINT = "https://api.punkapi.com/v2";
-const axios = require("axios");
-export const api = {
+// const axios = require("axios");
+import axios from 'axios';
+
+const api = {
   /**
 	  abv_gt	number	Returns all beers with ABV greater than the supplied number
 		abv_lt	number	Returns all beers with ABV less than the supplied number
@@ -18,11 +20,12 @@ export const api = {
 		food	string	Returns all beers matching the supplied food string, this performs a fuzzy match, if you need to add spaces just add an underscore (_).
 		ids	string (id|id|...)	Returns all beers matching the supplied ID's. You can pass in multiple ID's by separating them with a | symbol.
 	 */
-  getBeers: options => {
-    const { page = 1, perPage = 33 } = options;
+  getBeers: (page = 1, perPage = 33) => {
+    // const { page = 1, perPage = 33 } = options;
     let requestUrl = `${ENDPOINT}/beers?page=${page}&per_page=${perPage}`;
-
+    console.log(requestUrl);
     return axios.get(requestUrl).then(result => {
+      console.log('result', result);
       return result.data;
     });
   },
@@ -37,3 +40,5 @@ export const api = {
     });
   }
 };
+
+export default api;
