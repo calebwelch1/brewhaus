@@ -38,6 +38,32 @@ const api = {
     return axios.get(`${ENDPOINT}/beers/${id}`).then(result => {
       return result.data[0];
     });
+  },
+  getBeerByFilter: (filter) => {
+    let requestUrl;
+    switch (filter.value) {
+      case 'ABV<5':
+        // Handle ABV<5 filter logic
+        break;
+      case 'ABV>5':
+        // Handle ABV>5 filter logic
+        break;
+      case 'IBU<50':
+        // Handle IBU<50 filter logic
+        break;
+      case 'IBU>50':
+        // Handle IBU>50 filter logic
+        break;
+      case 'EBC<27':
+        // Handle EBC<27 filter logic
+        break;
+      case 'EBC>27':
+        // Handle EBC>27 filter logic
+        break;
+      default:
+        // Handle default case (no filter or unknown filter)
+        break;
+    }
   }
 };
 
