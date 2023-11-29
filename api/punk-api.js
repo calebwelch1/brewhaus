@@ -20,6 +20,8 @@ const api = {
 		food	string	Returns all beers matching the supplied food string, this performs a fuzzy match, if you need to add spaces just add an underscore (_).
 		ids	string (id|id|...)	Returns all beers matching the supplied ID's. You can pass in multiple ID's by separating them with a | symbol.
 	 */
+
+  // search function will need to append filter with &
   getBeers: (page = 1, perPage = 33) => {
     // const { page = 1, perPage = 33 } = options;
     let requestUrl = `${ENDPOINT}/beers?page=${page}&per_page=${perPage}`;
@@ -40,30 +42,42 @@ const api = {
     });
   },
   getBeerByFilter: (filter) => {
-    let requestUrl;
+    let param;
+    let number;
     switch (filter.value) {
       case 'ABV<5':
-        // Handle ABV<5 filter logic
+        param = 'abv_lt'
+        number = 5;
         break;
       case 'ABV>5':
-        // Handle ABV>5 filter logic
+        param = 'abv_gt'
+        number = 5;
         break;
       case 'IBU<50':
-        // Handle IBU<50 filter logic
+        param = 'ibu_lt'
+        number = 50;
         break;
       case 'IBU>50':
-        // Handle IBU>50 filter logic
+        param = 'ibu_gt'
+        number = 50;
         break;
       case 'EBC<27':
-        // Handle EBC<27 filter logic
+        param = 'ebc_lt'
+        number = 27;
         break;
       case 'EBC>27':
-        // Handle EBC>27 filter logic
+        param = 'ebc_gt'
+        number = 27;
         break;
       default:
-        // Handle default case (no filter or unknown filter)
+        console.log('no filter or error!')
         break;
     }
+    const requestUrl = `https://api.punkapi.com/v2/beers?${param}=${number}`
+    return axios.get(requestUrl).then(result => {
+      console.log('filter result', result);
+      return result.data;
+    });
   }
 };
 

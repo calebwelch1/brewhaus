@@ -1,6 +1,6 @@
 <script lang="ts">
 import api from '../../api/punk-api.js'
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 
 /*
 TODO:
@@ -27,6 +27,7 @@ export default {
     const beers = ref([]);
     const filters = ['ABV<5', 'ABV>5', 'IBU<50', 'IBU>50', 'EBC<27', 'EBC>27'];
     const filter = ref('');
+    const loading = ref(false)
 
     const onResize = () => {
       windowWidth.value = window.innerWidth;
@@ -46,6 +47,20 @@ export default {
     });
 
     onMounted(getBeers);
+
+    watch(filter, async (newFilter, oldFilter) => {
+    if (newFilter != '') {
+    loading.value = true
+    try {
+      const data = await api.getBeerByFilter(filter);
+      beers.value = data;
+    } catch (error) {
+      answer.value = 'Error! Could not reach the API. ' + error
+    } finally {
+      loading.value = false
+    }
+  }
+  })
 
     return {
       windowWidth,
