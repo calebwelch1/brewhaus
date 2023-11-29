@@ -23,7 +23,7 @@ const api = {
   getBeers: (page = 1, perPage = 33) => {
     // const { page = 1, perPage = 33 } = options;
     let requestUrl = `${ENDPOINT}/beers?page=${page}&per_page=${perPage}`;
-    console.log(requestUrl);
+    
     return axios.get(requestUrl).then(result => {
       console.log('result', result);
       return result.data;
