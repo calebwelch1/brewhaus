@@ -171,11 +171,11 @@ li {
 
 .detail-label {
   font-weight: bold;
-  font-size: 1.7rem;
-  color: #333; /* Add color to the labels for better readability */
+  font-size: 1.rem;
+  color: #333;
 }
 
 .detail-value {
-  color: black; /* Adjust the color of the values for contrast */
+  color: black;
 }
 </style>
