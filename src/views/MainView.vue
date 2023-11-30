@@ -27,11 +27,11 @@ export default {
   setup() {
     const windowWidth = ref(window.innerWidth);
     const beers = ref([]);
-    const filters: String[] = ['ABV<5', 'ABV>5', 'IBU<50', 'IBU>50', 'EBC<27', 'EBC>27'];
-    const filter: String = ref('');
-    const currentPage: number = ref(1);
-    const search: String = ref('');
-    const loading: Boolean = ref(false)
+    const filters = ['ABV<5', 'ABV>5', 'IBU<50', 'IBU>50', 'EBC<27', 'EBC>27'];
+    const filter = ref('');
+    const currentPage = ref(1);
+    const search = ref('');
+    const loading = ref(false)
     const currentBeer = ref({})
 
     const onResize = () => {

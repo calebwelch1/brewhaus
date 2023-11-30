@@ -6,7 +6,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["jquery", "node"],
+    "types": ["jquery", "node", "vite/client"],
     "typeRoots": [ "../node_modules/@types",  "./typings", ]
   },
 
