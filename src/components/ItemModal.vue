@@ -15,8 +15,12 @@ export default {
 <template>
   <Transition name="modal-fade">
     <div id="modal" class="item-card">
-      <p style="position: absolute; top: 3; right: 2; z-index: 101; cursor: pointer;" @click="$emit('close')">CLOSE X </p>
-      <div style="flex:30"><img :src="beer.image_url" style="margin:auto; height: 100%; width: 100%; max-height: 80%; max-width: 70%; margin-left: 5rem;margin-top: 5rem; margin-bottom: 5rem;"/></div>
+      <p style="position: absolute; top: 3; right:30px; z-index: 101; cursor: pointer; font-size: 3.5rem;" @click="$emit('close')">X </p>
+      <div style="flex:30; height: 100%;">
+        <div class="gradient-background" style="border: 1px solid blue; border-radius: 1rem; height: 100%; width: 100%; max-height: 80%; max-width: 70%; margin-top: 10%; margin-left: 10%; ">
+        <img :src="beer.image_url" style="margin:auto; height: 100%; width: 100%; max-height: 80%; max-width: 60%; margin-left: 20%;margin-top: 5rem; margin-bottom: 5rem;"/>
+        </div>
+      </div>
       <div style="flex:70; display: flex; flex-direction:column; margin-right: 5rem;margin-top: 5rem; margin-bottom: 5rem;">
         <h2 class="beer-name">{{ beer.name }}</h2>
     <div class="beer-details">
@@ -96,6 +100,9 @@ export default {
   </Transition>
 </template>
 <style lang="scss">
+.gradient-background {
+background: linear-gradient(0deg, rgba(247,127,0,1) 0%, rgba(234,226,183,1) 100%);
+}
 .ingredients {
   display: flex;
   justify-content: space-between;
@@ -119,13 +126,13 @@ li {
   width: 100%;
   max-height: 70vh;
   max-width: 90vw;
-  background: #fff;
+  // background: #fff;
   border-radius: 1rem;
   filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
   position: absolute;
   z-index: 99;
-  top: 0;
-  left: 0;
+  top: 0%;
+  left: 5%;
   display:flex;
   flex-direction: row;
   position: relative;
@@ -143,7 +150,7 @@ li {
 }
 
 .beer-name {
-  font-size: 24px;
+  font-size: 2.5rem !important;
   font-weight: bold;
   margin-bottom: 16px;
 }
@@ -151,7 +158,7 @@ li {
 .beer-details {
   display: flex;
   flex-direction: column;
-  margin-top: 16px; /* Add some spacing at the top */
+  margin-top: 16px;
   overflow-y: scroll;
 }
 
@@ -159,12 +166,12 @@ li {
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
-  font-size: 16px; /* Adjust the font size */
+  font-size: 20px;
 }
 
 .detail-label {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.7rem;
   color: #333; /* Add color to the labels for better readability */
 }
 

@@ -161,7 +161,6 @@ export default {
         <h1 style="margin: auto; font-size: 8rem; ">
           BREWHAUS
         </h1>
-        <ItemModal :beer="currentBeer.value" v-if="Object.keys(currentBeer).length != 0" @close="closeModal"/>
         <div style="display: flex; flex-direction: row;">
         <input type="text" v-model="search" style="width: 70vw; flex: 70; height: 1.5rem;"/>
         <div class="filter-container">
@@ -174,6 +173,7 @@ export default {
         </div>
       </div>
       <div class="main-container">
+        <ItemModal :beer="currentBeer.value" v-if="Object.keys(currentBeer).length != 0" @close="closeModal"/>
         <div class="beer-cards">
         <div
         class="beer-card tan"
@@ -265,6 +265,7 @@ background: linear-gradient(0deg, rgba(247,127,0,1) 0%, rgba(234,226,183,1) 100%
   // background: #Cbcbcb;
   overflow-y: scroll;
   display: block;
+  position: relative;
   &-flex{
   flex: 85;
   display: flex;
