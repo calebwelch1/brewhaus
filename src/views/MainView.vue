@@ -7,27 +7,26 @@ TODO:
 FRONTEND:
 ----ARIA
 -----use proper html structure
------alt text
+-----alt text - x
 
-----MOBILE
-----ITEM MODAL
-----PAGINATION
+----MOBILE - 
+----ITEM MODAL - 
+----PAGINATION - 
 
 BACKEND:
-----LAZY LOADING
-----ADD TO CART
-----SEARCH/FILTER
------abv <5<
-
+----LAZY LOADING -
+----ADD TO CART -
+----SEARCH/FILTER -
 */
 
 export default {
   setup() {
     const windowWidth = ref(window.innerWidth);
     const beers = ref([]);
-    const filters = ['ABV<5', 'ABV>5', 'IBU<50', 'IBU>50', 'EBC<27', 'EBC>27'];
-    const filter = ref('');
-    const loading = ref(false)
+    const filters: String[] = ['ABV<5', 'ABV>5', 'IBU<50', 'IBU>50', 'EBC<27', 'EBC>27'];
+    const filter: String = ref('');
+    const search: String = ref('');
+    const loading: Boolean = ref(false)
 
     const onResize = () => {
       windowWidth.value = window.innerWidth;
@@ -49,13 +48,43 @@ export default {
     onMounted(getBeers);
 
     watch(filter, async (newFilter, oldFilter) => {
-    if (newFilter != '') {
+      // console.log('filter watch called')
+    if (newFilter === '') getBeers();
+    else {
     loading.value = true
     try {
-      const data = await api.getBeerByFilter(filter);
+      let data;
+      if (search.value === ''){
+       data = await api.getBeerByFilter(filter.value);
+      }
+      else {
+        data = await api.getBeerBySearch(search.value, filter.value)
+      }
       beers.value = data;
     } catch (error) {
-      answer.value = 'Error! Could not reach the API. ' + error
+      console.log(error);
+    } finally {
+      loading.value = false
+    }
+  }
+  })
+  // TODO: reverse so if filter is chosen after search it doesn't replace search call
+
+  watch(search, async (newSearch, oldSearch) => {
+    if (newSearch === '') getBeers();
+    else {
+    loading.value = true
+    try {
+      let data;
+      if( filter.value === '') {
+      data = await api.getBeerBySearch(search.value);
+      }
+      else {
+        data = await api.getBeerBySearch(search.value, filter.value);
+      }
+      beers.value = data;
+    } catch (error) {
+      console.log(error)
     } finally {
       loading.value = false
     }
@@ -67,6 +96,8 @@ export default {
       beers,
       filters,
       filter,
+      search,
+      loading,
     };
   },
 };
@@ -81,7 +112,7 @@ export default {
           BREWHAUS
         </h1>
         <div style="display: flex; flex-direction: row;">
-        <input type="text" style="width: 70vw; flex: 70; height: 1.5rem;"/>
+        <input type="text" v-model="search" style="width: 70vw; flex: 70; height: 1.5rem;"/>
         <!-- <div id="filter" style="flex: 20; cursor: pointer; width: 4rem; margin: auto;">Filter</div> -->
         <div class="filter-container">
         <select v-model="filter" class="filter-select">
@@ -93,7 +124,8 @@ export default {
         </div>
       </div>
       <div class="main-container">
-        <div
+        <div class="main-container-flex">
+          <div
         class="beer-card"
         v-for="(beer, index) in beers"
         >
@@ -102,6 +134,7 @@ export default {
         <p>ABV:{{beer.abv}}</p>
         <p>{{beer.tagline}}</p>
         <p>{{beer.description}}</p>
+        </div>
         </div>
       </div>
     </div>
@@ -147,13 +180,17 @@ flex-direction: column;
 
 .main-container {
   width: 100%;
-  height: 100%;
+  height: 85vh;
   background: #Cbcbcb;
-  flex: 85;
   overflow-y: scroll;
+  display: block;
+  &-flex{
+  flex: 85;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  flex-shrink: 0;
+  }
 }
 
 .beer-card {

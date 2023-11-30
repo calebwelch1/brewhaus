@@ -3,6 +3,41 @@ const ENDPOINT = "https://api.punkapi.com/v2";
 // const axios = require("axios");
 import axios from 'axios';
 
+const findFilter = (filter) => {
+    let param;
+    let number;
+    switch (filter) {
+      case 'ABV<5':
+        param = 'abv_lt'
+        number = 5;
+        break;
+      case 'ABV>5':
+        param = 'abv_gt'
+        number = 5;
+        break;
+      case 'IBU<50':
+        param = 'ibu_lt'
+        number = 50;
+        break;
+      case 'IBU>50':
+        param = 'ibu_gt'
+        number = 50;
+        break;
+      case 'EBC<27':
+        param = 'ebc_lt'
+        number = 27;
+        break;
+      case 'EBC>27':
+        param = 'ebc_gt'
+        number = 27;
+        break;
+      default:
+        console.log('no filter or error!')
+        break;
+    }
+    return [param, number];
+}
+
 const api = {
   /**
 	  abv_gt	number	Returns all beers with ABV greater than the supplied number
@@ -41,38 +76,24 @@ const api = {
       return result.data[0];
     });
   },
-  getBeerByFilter: (filter) => {
-    let param;
-    let number;
-    switch (filter.value) {
-      case 'ABV<5':
-        param = 'abv_lt'
-        number = 5;
-        break;
-      case 'ABV>5':
-        param = 'abv_gt'
-        number = 5;
-        break;
-      case 'IBU<50':
-        param = 'ibu_lt'
-        number = 50;
-        break;
-      case 'IBU>50':
-        param = 'ibu_gt'
-        number = 50;
-        break;
-      case 'EBC<27':
-        param = 'ebc_lt'
-        number = 27;
-        break;
-      case 'EBC>27':
-        param = 'ebc_gt'
-        number = 27;
-        break;
-      default:
-        console.log('no filter or error!')
-        break;
+  getBeerBySearch: (search, filter = '') => {
+    console.log(search,'search',filter,'filter')
+    let param, number;
+    let requestUrl = `https://api.punkapi.com/v2/beers?beer_name=${search}`
+    if (filter != ''){
+      console.log('begin search for filter', filter);
+      [param, number] = findFilter(filter);
+      console.log('param', param, 'number', number);
+      requestUrl += `&${param}=${number}`
     }
+    return axios.get(requestUrl).then(result => {
+      console.log('searchurl', requestUrl, 'search result', result);
+      return result.data;
+    });
+  },
+  getBeerByFilter: (filter) => {
+    let param, number;
+    [param, number]= findFilter(filter)
     const requestUrl = `https://api.punkapi.com/v2/beers?${param}=${number}`
     return axios.get(requestUrl).then(result => {
       console.log('filter result', result);
