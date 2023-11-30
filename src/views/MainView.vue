@@ -1,6 +1,7 @@
 <script lang="ts">
 import api from '../../api/punk-api.js'
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import ItemModal from '../components/ItemModal.vue';
 
 /*
 TODO:
@@ -20,6 +21,9 @@ BACKEND:
 */
 
 export default {
+  components: {
+    ItemModal,
+  },
   setup() {
     const windowWidth = ref(window.innerWidth);
     const beers = ref([]);
@@ -27,6 +31,7 @@ export default {
     const filter: String = ref('');
     const search: String = ref('');
     const loading: Boolean = ref(false)
+    const currentBeer = ref({})
 
     const onResize = () => {
       windowWidth.value = window.innerWidth;
@@ -68,7 +73,6 @@ export default {
     }
   }
   })
-  // TODO: reverse so if filter is chosen after search it doesn't replace search call
 
   watch(search, async (newSearch, oldSearch) => {
     if (newSearch === '') getBeers();
@@ -98,7 +102,13 @@ export default {
       filter,
       search,
       loading,
+      currentBeer,
     };
+  },
+  methods: {
+    openModal(beer) {
+      this.currentBeer.value = beer;
+    },
   },
 };
 
@@ -111,13 +121,14 @@ export default {
         <h1 style="margin: auto; font-size: 8rem; ">
           BREWHAUS
         </h1>
+        <ItemModal :beer="currentBeer.value" v-if="Object.keys(currentBeer).length != 0"/>
         <div style="display: flex; flex-direction: row;">
         <input type="text" v-model="search" style="width: 70vw; flex: 70; height: 1.5rem;"/>
         <!-- <div id="filter" style="flex: 20; cursor: pointer; width: 4rem; margin: auto;">Filter</div> -->
         <div class="filter-container">
         <select v-model="filter" class="filter-select">
             <option value="">Select an option</option>
-            <option v-for="(option, index) in filters" :value="option" @click="(option)=>console.log(option)">{{option}}</option>
+            <option v-for="(option, index) in filters" :value="option">{{option}}</option>
         </select>
         <div class="filter-arrow">&#9660;</div>
     </div>
@@ -128,6 +139,7 @@ export default {
           <div
         class="beer-card"
         v-for="(beer, index) in beers"
+        @click="openModal(beer)"
         >
         <img class="beer-card-image" :src="beer.image_url" :alt="`${beer.name}`"/>
         <p>{{beer.name}}</p>
@@ -211,8 +223,6 @@ flex-direction: column;
   }
 }
 
-//filter
-
 
 .filter-container {
     position: relative;
@@ -259,7 +269,6 @@ flex-direction: column;
             background-color: #f0f0f0;
         }
 
-        /* Show the dropdown when the select is clicked */
         .filter-select:focus + .filter-options {
             display: block;
         }
