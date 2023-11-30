@@ -108,7 +108,14 @@ export default {
   methods: {
     openModal(beer) {
       this.currentBeer.value = beer;
+      const modal = document.getElementById('modal');
+      modal!.style.display = "flex";
     },
+    closeModal(){
+      // this.currentBeer.value = {}
+      const modal = document.getElementById('modal');
+      modal!.style.display = "none";
+    }
   },
 };
 
@@ -121,7 +128,7 @@ export default {
         <h1 style="margin: auto; font-size: 8rem; ">
           BREWHAUS
         </h1>
-        <ItemModal :beer="currentBeer.value" v-if="Object.keys(currentBeer).length != 0"/>
+        <ItemModal :beer="currentBeer.value" v-if="Object.keys(currentBeer).length != 0" @close="closeModal"/>
         <div style="display: flex; flex-direction: row;">
         <input type="text" v-model="search" style="width: 70vw; flex: 70; height: 1.5rem;"/>
         <!-- <div id="filter" style="flex: 20; cursor: pointer; width: 4rem; margin: auto;">Filter</div> -->
@@ -135,17 +142,21 @@ export default {
         </div>
       </div>
       <div class="main-container">
-        <div class="main-container-flex">
+        <div class="beer-cards">
           <div
         class="beer-card"
         v-for="(beer, index) in beers"
         @click="openModal(beer)"
         >
-        <img class="beer-card-image" :src="beer.image_url" :alt="`${beer.name}`"/>
-        <p>{{beer.name}}</p>
-        <p>ABV:{{beer.abv}}</p>
-        <p>{{beer.tagline}}</p>
-        <p>{{beer.description}}</p>
+        <div class="beer-image">
+          <img :src="beer.image_url" :alt="`${beer.name}`"/>
+        </div>
+        <div class="beer-info">
+        <p class="beer-name">{{ beer.name }}</p>
+        <p class="beer-abv">ABV: {{ beer.abv }}</p>
+        <p class="beer-tagline">{{ beer.tagline }}</p>
+        <p class="beer-description">{{ beer.description }}</p>
+      </div>
         </div>
         </div>
       </div>
@@ -205,9 +216,36 @@ flex-direction: column;
   }
 }
 
+// .beer-card {
+//   height: 22rem;
+//   width: 18rem;
+//   display: flex;
+//   flex-direction: column;
+//   border: 0.5px solid blue;
+//   background: #fff;
+//   color: black;
+//   border-radius: 1rem;
+//   filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+//   cursor:pointer;
+//   &-image{
+//   width: 100%;
+//   height: 100%;
+//   max-height: 11rem;
+//   max-width: 5rem;
+//   }
+// }
+
+.beer-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  margin: 3rem;
+}
+
 .beer-card {
+  width: calc(33.33% - 16px);
   height: 22rem;
-  width: 18rem;
   display: flex;
   flex-direction: column;
   border: 0.5px solid blue;
@@ -215,14 +253,53 @@ flex-direction: column;
   color: black;
   border-radius: 1rem;
   filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
-  &-image{
-  width: 100%;
-  height: 100%;
-  max-height: 11rem;
-  max-width: 5rem;
-  }
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
+.beer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.beer-image {
+  max-height: 11rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.beer-image img {
+  max-height: 100%;
+  max-width: 100%;
+  height: auto;
+  width: auto;
+}
+
+.beer-info {
+  padding: 16px;
+  flex: 1;
+}
+
+.beer-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.beer-abv {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.beer-tagline {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.beer-description {
+  font-size: 14px;
+}
 
 .filter-container {
     position: relative;

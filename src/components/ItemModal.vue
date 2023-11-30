@@ -5,6 +5,7 @@ export default {
   props: {
     beer: null,
   },
+  emits: ['close'],
   setup(props) {
     const beer = ref({})
   }
@@ -14,8 +15,9 @@ export default {
 <template>
   <Transition name="modal-fade">
     <div id="modal" class="item-card">
-      <div style="flex:30"><img :src="beer.image_url" style="margin:auto; height: 100%; width: 100%; max-height: 80%; max-width: 70%;"/></div>
-      <div style="flex:70; display: flex; flex-direction:column;">
+      <p style="position: absolute; top: 3; right: 2; z-index: 101; cursor: pointer;" @click="$emit('close')">CLOSE X </p>
+      <div style="flex:30"><img :src="beer.image_url" style="margin:auto; height: 100%; width: 100%; max-height: 80%; max-width: 70%; margin-left: 5rem;margin-top: 5rem; margin-bottom: 5rem;"/></div>
+      <div style="flex:70; display: flex; flex-direction:column; margin-right: 5rem;margin-top: 5rem; margin-bottom: 5rem;">
         <h2 class="beer-name">{{ beer.name }}</h2>
     <div class="beer-details">
       <div class="beer-detail">
@@ -126,6 +128,7 @@ li {
   left: 0;
   display:flex;
   flex-direction: row;
+  position: relative;
 }
 
 
