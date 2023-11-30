@@ -171,7 +171,7 @@ li {
 
 .detail-label {
   font-weight: bold;
-  font-size: 1.rem;
+  font-size: 1.2rem;
   color: #333;
 }
 
