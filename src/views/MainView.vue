@@ -143,19 +143,23 @@ export default {
       </div>
       <div class="main-container">
         <div class="beer-cards">
-          <div
-        class="beer-card"
+        <div
+        class="beer-card tan"
         v-for="(beer, index) in beers"
         @click="openModal(beer)"
         >
-        <div class="beer-image">
+        <div class="beer-card-background blue">
+        </div>
+        <div  class="beer-title" style="overflow-x: hidden;">
+        <h3>{{beer.name}}</h3>
+        </div>
+        <div class="beer-image" :style="beer.image_url.includes('keg') ? 'left:40%' : 'left: 45%'">
           <img :src="beer.image_url" :alt="`${beer.name}`"/>
         </div>
         <div class="beer-info">
-        <p class="beer-name">{{ beer.name }}</p>
-        <p class="beer-abv">ABV: {{ beer.abv }}</p>
-        <p class="beer-tagline">{{ beer.tagline }}</p>
-        <p class="beer-description">{{ beer.description }}</p>
+        <!-- <p class="beer-name">{{ beer.name }}</p> -->
+        <!-- <p class="beer-abv">ABV: {{ beer.abv }}</p>
+        <p class="beer-tagline">{{ beer.tagline }}</p> -->
       </div>
         </div>
         </div>
@@ -165,6 +169,22 @@ export default {
 </template>
 
 <style lang="scss">
+// palette
+.blue {
+  background-color: #003049 !important;
+}
+.red {
+  background-color: #d62828 !important;
+}
+.orange {
+  background-color: #f77f00 !important;
+}
+.yellow {
+  background-color: #fcbf49 !important;
+}
+.tan {
+  background-color: #eae2b7 !important;
+}
 body{
   height: 100%;
   max-height: 100vh;
@@ -243,8 +263,16 @@ flex-direction: column;
   margin: 3rem;
 }
 
-.beer-card {
-  width: calc(33.33% - 16px);
+//mobile
+@media (max-width: 768px) {
+  .beer-cards {
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+  }
+
+  .beer-card {
+  width: 70% !important;
   height: 22rem;
   display: flex;
   flex-direction: column;
@@ -256,6 +284,32 @@ flex-direction: column;
   cursor: pointer;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
+}
+
+.beer-card-background {
+  height: 45%;
+  width: 100%;
+  position:absolute;
+  bottom: 0;
+  z-index: 10;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.beer-card {
+  width: calc(29.33% - 16px);
+  height: 22rem;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: black;
+  border-radius: 1rem;
+  filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  position: relative;
+}
 
 .beer-card:hover {
   transform: translateY(-5px);
@@ -263,10 +317,32 @@ flex-direction: column;
 }
 
 .beer-image {
-  max-height: 11rem;
+  max-height: 15rem;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  top: 10%;
+  z-index: 25;
+  // left: 45%;
+}
+
+.beer-title {
+  height: auto;
+  // width: auto;
+  width: 24rem;
+  white-space: nowrap;
+  font-size: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: -5%;
+  z-index: 25;
+  left: 50%; /* Set to the center of the parent container */
+  transform: translateX(-50%);
+  color: #fff;
 }
 
 .beer-image img {
