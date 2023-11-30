@@ -29,6 +29,7 @@ export default {
     const beers = ref([]);
     const filters: String[] = ['ABV<5', 'ABV>5', 'IBU<50', 'IBU>50', 'EBC<27', 'EBC>27'];
     const filter: String = ref('');
+    const currentPage: number = ref(1);
     const search: String = ref('');
     const loading: Boolean = ref(false)
     const currentBeer = ref({})
@@ -44,13 +45,42 @@ export default {
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
+      // lazy loader observer
+    //   const options = {
+    //   root: null,
+    //   rootMargin: '0px',
+    //   threshold: 0.1, // Trigger when 10% of the target element is visible
+    // };
+    // this.observer = new IntersectionObserver(this.handleIntersection, options);
+    // this.observeTarget(); // Start observing
     });
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize);
     });
 
+    // const loadingFunction = () => {
+    //   setTimeout(function(){
+    //     console.log('start of timeout')
+    // // $("#loading").css("display","flex");
+    // const loader = document.getElementById('loading');
+    //   loader!.style.display = "flex";
+    // setTimeout(function(){
+    //   // $("#loading").css("display","none");
+    //   const loader = document.getElementById('loading');
+    //   loader!.style.display = "none";
+    // },700);
+    // },1200);
+    // console.log('end of timeout')
+    // };
+
     onMounted(getBeers);
+
+  //   watch(loading, async (oldLoading, newLoading) => {
+  //   if (loading.value = true) {
+  //     loadingFunction();
+  //   }
+  // })
 
     watch(filter, async (newFilter, oldFilter) => {
       // console.log('filter watch called')
@@ -115,7 +145,7 @@ export default {
       // this.currentBeer.value = {}
       const modal = document.getElementById('modal');
       modal!.style.display = "none";
-    }
+    },
   },
 };
 
@@ -124,6 +154,9 @@ export default {
 <template>
   <main>
     <div class="main">
+      <!-- <div id="loading">
+        <div id="spinner"></div>
+      </div> -->
       <div class="header">
         <h1 style="margin: auto; font-size: 8rem; ">
           BREWHAUS
@@ -131,7 +164,6 @@ export default {
         <ItemModal :beer="currentBeer.value" v-if="Object.keys(currentBeer).length != 0" @close="closeModal"/>
         <div style="display: flex; flex-direction: row;">
         <input type="text" v-model="search" style="width: 70vw; flex: 70; height: 1.5rem;"/>
-        <!-- <div id="filter" style="flex: 20; cursor: pointer; width: 4rem; margin: auto;">Filter</div> -->
         <div class="filter-container">
         <select v-model="filter" class="filter-select">
             <option value="">Select an option</option>
@@ -148,8 +180,13 @@ export default {
         v-for="(beer, index) in beers"
         @click="openModal(beer)"
         >
-        <div class="beer-card-background blue">
+        <div class="info-button blue">
+        <p style="font-size: 18px; color: white;"> i </p>
         </div>
+        <div class="beer-card-background orange">
+        </div>
+        <p class="beer-abv">ABV: {{ beer.abv }}</p>
+        <p class="beer-ph">IBU: {{ beer.ibu }}</p>
         <div  class="beer-title" style="overflow-x: hidden;">
         <h3>{{beer.name}}</h3>
         </div>
@@ -158,8 +195,7 @@ export default {
         </div>
         <div class="beer-info">
         <!-- <p class="beer-name">{{ beer.name }}</p> -->
-        <!-- <p class="beer-abv">ABV: {{ beer.abv }}</p>
-        <p class="beer-tagline">{{ beer.tagline }}</p> -->
+        <!-- <p class="beer-tagline">{{ beer.tagline }}</p> -->
       </div>
         </div>
         </div>
@@ -219,12 +255,14 @@ height: 100%;
 flex: 15;
 display: flex;
 flex-direction: column;
+background: rgb(247,127,0);
+background: linear-gradient(0deg, rgba(247,127,0,1) 0%, rgba(234,226,183,1) 100%);
 }
 
 .main-container {
   width: 100%;
   height: 85vh;
-  background: #Cbcbcb;
+  // background: #Cbcbcb;
   overflow-y: scroll;
   display: block;
   &-flex{
@@ -255,6 +293,21 @@ flex-direction: column;
 //   }
 // }
 
+.info-button {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 25px;
+  height: 25px;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 25;
+}
+
 .beer-cards {
   display: flex;
   flex-wrap: wrap;
@@ -262,6 +315,39 @@ flex-direction: column;
   justify-content: space-between;
   margin: 3rem;
 }
+
+.beer-abv {
+  font-size: 28px;
+  position: absolute;
+  top: 20%;
+  left: 10%;
+}
+
+.beer-ph {
+  font-size: 28px;
+  position: absolute;
+  top: 20%;
+  right: 10%;
+}
+
+@media (max-width: 1350px) {
+  .beer-abv {
+  font-size: 28px;
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  display: none !important;
+}
+
+.beer-ph {
+  font-size: 28px;
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  display: none !important;
+}
+}
+
 
 //mobile
 @media (max-width: 768px) {
@@ -323,7 +409,7 @@ flex-direction: column;
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 10%;
+  top: 4%;
   z-index: 25;
   // left: 45%;
 }
@@ -341,7 +427,7 @@ flex-direction: column;
   bottom: -5%;
   z-index: 25;
   left: 50%; /* Set to the center of the parent container */
-  transform: translateX(-50%);
+  transform: translateX(-48%);
   color: #fff;
 }
 
@@ -363,11 +449,6 @@ flex-direction: column;
   margin-bottom: 8px;
 }
 
-.beer-abv {
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
 .beer-tagline {
   font-size: 14px;
   margin-bottom: 8px;
@@ -375,6 +456,35 @@ flex-direction: column;
 
 .beer-description {
   font-size: 14px;
+}
+
+#loading {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background:rgba(255, 255, 255, 0.7);
+    z-index: 999;
+    // display: flex;
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+#spinner {
+    animation: rotate 0.56s infinite linear;
+    width:50px;
+    height:50px;
+    border:12px solid #fff;
+    border-bottom:12px solid rgb(255, 50, 50);
+    border-radius:50%;
+    margin-left:50%;
+    margin-top: 30%;
+    position: fixed;
+
+}
+@keyframes rotate {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
 }
 
 .filter-container {
