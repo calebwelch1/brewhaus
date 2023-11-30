@@ -62,7 +62,7 @@ const api = {
     let requestUrl = `${ENDPOINT}/beers?page=${page}&per_page=${perPage}`;
     
     return axios.get(requestUrl).then(result => {
-      console.log('result', result);
+      // console.log('result', result);
       return result.data;
     });
   },
@@ -77,17 +77,17 @@ const api = {
     });
   },
   getBeerBySearch: (search, filter = '') => {
-    console.log(search,'search',filter,'filter')
+    // console.log(search,'search',filter,'filter')
     let param, number;
     let requestUrl = `https://api.punkapi.com/v2/beers?beer_name=${search}`
     if (filter != ''){
-      console.log('begin search for filter', filter);
+      // console.log('begin search for filter', filter);
       [param, number] = findFilter(filter);
-      console.log('param', param, 'number', number);
+      // console.log('param', param, 'number', number);
       requestUrl += `&${param}=${number}`
     }
     return axios.get(requestUrl).then(result => {
-      console.log('searchurl', requestUrl, 'search result', result);
+      // console.log('searchurl', requestUrl, 'search result', result);
       return result.data;
     });
   },
@@ -96,7 +96,7 @@ const api = {
     [param, number]= findFilter(filter)
     const requestUrl = `https://api.punkapi.com/v2/beers?${param}=${number}`
     return axios.get(requestUrl).then(result => {
-      console.log('filter result', result);
+      // console.log('filter result', result);
       return result.data;
     });
   }

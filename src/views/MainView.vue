@@ -10,14 +10,14 @@ FRONTEND:
 -----use proper html structure
 -----alt text - x
 
-----MOBILE - 
-----ITEM MODAL - 
-----PAGINATION - 
+----MOBILE - x
+----ITEM MODAL - x
+----PAGINATION - x
 
 BACKEND:
-----LAZY LOADING -
+----PAGINATION - x
 ----ADD TO CART -
-----SEARCH/FILTER -
+----SEARCH/FILTER - x
 */
 
 export default {
@@ -40,6 +40,24 @@ export default {
 
     const getBeers = async () => {
       const data = await api.getBeers();
+      beers.value = data;
+    };
+
+    const incrementPage = async () => {
+      if (currentPage.value === 7) {
+        return;
+      }
+      currentPage.value++
+      const data = await api.getBeers(currentPage.value, 33);
+      beers.value = data;
+    };
+
+    const decrementPage = async () => {
+      if (currentPage.value === 1) {
+        return;
+      }
+      currentPage.value--
+      const data = await api.getBeers(currentPage.value, 33);
       beers.value = data;
     };
 
@@ -133,6 +151,9 @@ export default {
       search,
       loading,
       currentBeer,
+      currentPage,
+      incrementPage,
+      decrementPage,
     };
   },
   methods: {
@@ -198,6 +219,11 @@ export default {
         <!-- <p class="beer-tagline">{{ beer.tagline }}</p> -->
       </div>
         </div>
+        </div>
+        <div class="pagination">
+          <a href="#" class="prev" @click="decrementPage">&lt;</a>
+          <span class="current" style="font-size:2.5rem;">{{currentPage}}</span>
+          <a href="#" class="next" @click="incrementPage">&gt;</a>
         </div>
       </div>
     </div>
@@ -504,37 +530,63 @@ background: linear-gradient(0deg, rgba(247,127,0,1) 0%, rgba(234,226,183,1) 100%
     cursor: pointer;
 }
 
-        .filter-arrow {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            pointer-events: none;
-        }
+.filter-arrow {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
 
-        /* Style the dropdown list */
-        .filter-options {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            max-height: 150px;
-            overflow-y: auto;
-            z-index: 1;
-        }
+/* Style the dropdown list */
+.filter-options {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1;
+}
+.filter-option {
+    padding: 10px;
+    cursor: pointer;
+}
+.filter-option:hover {
+    background-color: #f0f0f0;
+}
 
-        .filter-option {
-            padding: 10px;
-            cursor: pointer;
-        }
+.filter-select:focus + .filter-options {
+    display: block;
+}
 
-        .filter-option:hover {
-            background-color: #f0f0f0;
-        }
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
 
-        .filter-select:focus + .filter-options {
-            display: block;
-        }
+a {
+  text-decoration: none;
+  color: #333;
+  font-size: 2.5rem;
+  padding: 4px 12px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+a:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.current {
+  font-size: 20px;
+  margin: 0 16px;
+}
+
 </style>
 
