@@ -15,7 +15,7 @@ export default {
 <template>
   <Transition name="modal-fade">
     <div id="modal" class="item-card">
-      <p style="position: absolute; top: 3; right:30px; z-index: 101; cursor: pointer; font-size: 3.5rem;" @click="$emit('close')">X </p>
+      <p style="position: absolute; top: 3; right:30px; z-index: 201; cursor: pointer; font-size: 3.5rem;" @click="$emit('close')">X </p>
       <div style="flex:30; height: 100%;">
         <div class="gradient-background" style="border: 1px solid blue; border-radius: 1rem; height: 100%; width: 100%; max-height: 80%; max-width: 70%; margin-top: 10%; margin-left: 10%; ">
         <img :src="beer.image_url" style="margin:auto; height: 100%; width: 100%; max-height: 80%; max-width: 60%; margin-left: 20%;margin-top: 5rem; margin-bottom: 5rem;"/>
@@ -136,6 +136,28 @@ li {
   display:flex;
   flex-direction: row;
   position: relative;
+  background-color: #fff;
+}
+
+@media (max-width:1000px){
+  .item-card{
+  height:100%;
+  width: 100%;
+  max-height: 70vh;
+  max-width: 90vw;
+  // background: #fff;
+  border-radius: 1rem;
+  filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+  position: absolute;
+  z-index: 199;
+  top: 0%;
+  left: 5%;
+  display:flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #fff;
+  overflow-y: scroll;
+}
 }
 
 
