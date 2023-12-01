@@ -370,14 +370,14 @@ background: linear-gradient(0deg, rgba(247,127,0,1) 0%, rgba(234,226,183,1) 100%
   font-size: 28px;
   position: absolute;
   top: 20%;
-  left: 10%;
+  right: 10%;
   display: none !important;
 }
 }
 
 
 //mobile
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .beer-cards {
     flex-direction: column;
     align-items: center;
@@ -396,6 +396,22 @@ background: linear-gradient(0deg, rgba(247,127,0,1) 0%, rgba(234,226,183,1) 100%
   filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
   cursor: pointer;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.beer-abv {
+  font-size: 28px;
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  display: initial !important;
+}
+
+.beer-ph {
+  font-size: 28px;
+  position: absolute;
+  top: 20%;
+  right: 10%;
+  display: initial !important;
 }
 }
 
